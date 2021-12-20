@@ -1,4 +1,5 @@
-﻿using MagicLib.Models;
+﻿
+using MagicLib_Model.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;

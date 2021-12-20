@@ -9,4 +9,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.13" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MagicLib_DataAccess\MagicLib_DataAccess.csproj" />
+    <ProjectReference Include="..\MagicLib_Model\MagicLib_Model.csproj" />
+  </ItemGroup>
+
 </Project>

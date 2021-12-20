@@ -1,6 +1,6 @@
 using System;
 
-namespace MagicLib.Models
+namespace MagicLib_Model.Models
 {
     public class ErrorViewModel
     {
