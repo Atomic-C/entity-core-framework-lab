@@ -11,6 +11,8 @@ namespace MagicLib_Model.Models
     {
         [Key]
         public int GenreId { get; set; }
-        public string Name { get; set; }
+        public string GenreName { get; set; }
+        public int DisplayOrder { get; set; }
+        public int Quantity { get; set; }
     }
 }
