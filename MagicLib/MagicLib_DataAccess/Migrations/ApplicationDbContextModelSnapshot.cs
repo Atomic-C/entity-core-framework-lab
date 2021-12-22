@@ -32,6 +32,24 @@ namespace MagicLib_DataAccess.Migrations
 
                     b.ToTable("Categories");
                 });
+
+            modelBuilder.Entity("MagicLib_Model.Models.Genre", b =>
+                {
+                    b.Property<int>("GenreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("GenreName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("GenreId");
+
+                    b.ToTable("Genres");
+                });
 #pragma warning restore 612, 618
         }
     }
