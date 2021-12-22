@@ -20,7 +20,5 @@ namespace MagicLib_Model.Models
         [Required]
         public double Price { get; set; }
 
-        [NotMapped]
-        public double PriceRange { get; set; }
     }
 }
