@@ -20,8 +20,8 @@ namespace MagicLib_Model.Models
         [Required]
         public double Price { get; set; }
 
-        [ForeignKey("Category")]
-        public int Category_Id { get; set; }
-        public Category Category { get; set; }
+        [ForeignKey("Category")] // What column do we reference?
+        public int Category_Id { get; set; } // // This is called a navigation property. We can rename FK here.
+        public Category Category { get; set; } // This is the Foreign Key relation between Book and Categories
     }
 }
