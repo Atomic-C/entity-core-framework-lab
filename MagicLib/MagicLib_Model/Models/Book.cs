@@ -29,5 +29,9 @@ namespace MagicLib_Model.Models
         [ForeignKey("BookDetail")]
         public int BookDetail_Id { get; set; }
         public BookDetail BookDetail { get; set; } // "Within a Book there is one BookDetail
+
+        [ForeignKey("Publisher")] // FK relation between Book and Publisher
+        public int Publisher_Id { get; set; }
+        public Publisher Publisher { get; set; } // "Within a Book there is one Publisher
     }
 }
