@@ -33,5 +33,9 @@ namespace MagicLib_Model.Models
         [ForeignKey("Publisher")] // FK relation between Book and Publisher
         public int Publisher_Id { get; set; }
         public Publisher Publisher { get; set; } // "Within a Book there is one Publisher
+
+        /* EF Relations */
+        // https://henriquesd.medium.com/entity-framework-core-5-0-many-to-many-relationships-52c6c8b07b6e
+        public ICollection<Author> Authors { get; set; }
     }
 }

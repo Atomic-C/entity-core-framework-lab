@@ -27,5 +27,9 @@ namespace MagicLib_Model.Models
                 return $"{FirstName} {LastName}"; 
             }
         }
+
+        /* EF Relations */
+        // https://henriquesd.medium.com/entity-framework-core-5-0-many-to-many-relationships-52c6c8b07b6e
+        public ICollection<Book> Books { get; set; }
     }
 }
