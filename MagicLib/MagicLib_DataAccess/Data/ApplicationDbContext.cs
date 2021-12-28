@@ -20,5 +20,17 @@ namespace MagicLib_DataAccess.Data
        public DbSet<Author> Authors { get; set; } 
        public DbSet<Publisher> Publishers { get; set; } 
        public DbSet<BookDetail> BookDetails { get; set; } 
+       public DbSet<FluentBookDetail> FluentBookDetail { get; set; } 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Here we configure fluent API stuff
+
+            // BookDetail
+
+            modelBuilder.Entity<FluentBookDetail>().HasKey(b => b.BookDetail_Id); // This sets the PK of BookDetail to BookDetail_ID 
+
+            modelBuilder.Entity<FluentBookDetail>().Property(b => b.NumberOfCapters).IsRequired(); // Sets REQUIRED
+        }
     }
 }
