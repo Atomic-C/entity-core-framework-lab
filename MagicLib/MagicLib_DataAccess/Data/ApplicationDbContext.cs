@@ -21,16 +21,34 @@ namespace MagicLib_DataAccess.Data
        public DbSet<Publisher> Publishers { get; set; } 
        public DbSet<BookDetail> BookDetails { get; set; } 
        public DbSet<FluentBookDetail> FluentBookDetail { get; set; } 
+       public DbSet<FluentBook> FluentBooks { get; set; }
+       public DbSet<FluentAuthor> FluentAuthors { get; set; }
+       public DbSet<FluentPublisher> FluentPublishers { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Here we configure fluent API stuff
 
-            // BookDetail
-
+            // FluentBookDetail
             modelBuilder.Entity<FluentBookDetail>().HasKey(b => b.BookDetail_Id); // This sets the PK of BookDetail to BookDetail_ID 
-
             modelBuilder.Entity<FluentBookDetail>().Property(b => b.NumberOfCapters).IsRequired(); // Sets REQUIRED
+
+            // FluentBook
+            modelBuilder.Entity<FluentBook>().HasKey(b => b.Book_Id);
+            modelBuilder.Entity<FluentBook>().Property(b => b.Title).IsRequired();
+            modelBuilder.Entity<FluentBook>().Property(b => b.ISBN).IsRequired().HasMaxLength(15);
+            modelBuilder.Entity<FluentBook>().Property(b => b.Price).IsRequired();
+
+            // FluentBook
+            modelBuilder.Entity<FluentAuthor>().HasKey(b => b.Author_Id);
+            modelBuilder.Entity<FluentAuthor>().Property(b => b.FirstName).IsRequired();
+            modelBuilder.Entity<FluentAuthor>().Property(b => b.LastName).IsRequired();
+            modelBuilder.Entity<FluentAuthor>().Ignore(b => b.FullName);
+
+            modelBuilder.Entity<FluentPublisher>().HasKey(b => b.Publisher_Id);
+            modelBuilder.Entity<FluentPublisher>().Property(b => b.Name).IsRequired();
+            modelBuilder.Entity<FluentPublisher>().Property(b => b.Location).IsRequired();
         }
     }
 }

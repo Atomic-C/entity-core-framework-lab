@@ -30,6 +30,8 @@ namespace MagicLib_Model.Models
         public int BookDetail_Id { get; set; }
         public BookDetail BookDetail { get; set; } // "Within a Book there is one BookDetail
 
+        //Above Note: If we didn't add the not mapped and it's not in DbSet, EFCore 5 sees we need the above as a property and adds the property\table in the migration.
+
         [ForeignKey("Publisher")] // FK relation between Book and Publisher
         public int Publisher_Id { get; set; }
         public Publisher Publisher { get; set; } // "Within a Book there is one Publisher
