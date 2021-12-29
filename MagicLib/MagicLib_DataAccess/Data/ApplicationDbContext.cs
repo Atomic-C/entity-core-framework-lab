@@ -14,7 +14,7 @@ namespace MagicLib_DataAccess.Data
         {
 
         }
-       //public DbSet<Category> Categories { get; set; } // This is how EF Core knows Category is a model. It creates it in DB if it doesn't exist
+       public DbSet<Category> Categories { get; set; } // This is how EF Core knows Category is a model. It creates it in DB if it doesn't exist
        public DbSet<Genre> Genres { get; set; } 
        public DbSet<Book> Books { get; set; } 
        public DbSet<Author> Authors { get; set; } 
@@ -29,6 +29,10 @@ namespace MagicLib_DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Here we configure fluent API stuff
+
+            // Category table name and column name for testing purposes
+            modelBuilder.Entity<Category>().ToTable("Fluent_Category");
+            modelBuilder.Entity<Category>().Property(b => b.Name).HasColumnName("CategoryName");
 
             // FluentBookDetail
             modelBuilder.Entity<FluentBookDetail>().HasKey(b => b.BookDetail_Id); // This sets the PK of BookDetail to BookDetail_ID 
