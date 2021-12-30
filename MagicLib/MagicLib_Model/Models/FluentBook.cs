@@ -18,5 +18,8 @@ namespace MagicLib_Model.Models
         public int BookDetail_Id { get; set; }
         public FluentBookDetail FluentBookDetail { get; set; } // "Within a Book there is one BookDetail
 
+        public int Publisher_Id { get; set; }
+        public FluentPublisher FluentPublisher { get; set; } // "Within a Book there is one Publisher
+
     }
 }

@@ -12,6 +12,6 @@ namespace MagicLib_Model.Models
         public int Publisher_Id { get; set; }
         public int Name { get; set; }
         public int Location { get; set; }
-
+        public List<FluentBook> FluentBook { get; set; }
     }
 }
