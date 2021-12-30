@@ -13,6 +13,6 @@ namespace MagicLib_Model.Models
         public int NumberOfCapters { get; set; }
         public int NumberOfPages { get; set; }
         public int Weight { get; set; }
-
+        public FluentBook FluentBook { get; set; } // This enforces a 1:1 relationship with Book
     }
 }

@@ -43,16 +43,20 @@ namespace MagicLib_DataAccess.Data
             modelBuilder.Entity<FluentBook>().Property(b => b.Title).IsRequired();
             modelBuilder.Entity<FluentBook>().Property(b => b.ISBN).IsRequired().HasMaxLength(15);
             modelBuilder.Entity<FluentBook>().Property(b => b.Price).IsRequired();
+            // One to one 1:1 relationship between FluentBook and FluentBookDetail
+            modelBuilder.Entity<FluentBook>().HasOne(b => b.FluentBookDetail).WithOne(b => b.FluentBook).HasForeignKey<FluentBook>("BookDetail_Id");
 
-            // FluentBook
+            // FluentAuthor
             modelBuilder.Entity<FluentAuthor>().HasKey(b => b.Author_Id);
             modelBuilder.Entity<FluentAuthor>().Property(b => b.FirstName).IsRequired();
             modelBuilder.Entity<FluentAuthor>().Property(b => b.LastName).IsRequired();
             modelBuilder.Entity<FluentAuthor>().Ignore(b => b.FullName);
 
+            // FluentPublisher
             modelBuilder.Entity<FluentPublisher>().HasKey(b => b.Publisher_Id);
             modelBuilder.Entity<FluentPublisher>().Property(b => b.Name).IsRequired();
             modelBuilder.Entity<FluentPublisher>().Property(b => b.Location).IsRequired();
+
         }
     }
 }
