@@ -52,6 +52,17 @@ namespace MagicLib_DataAccess.Data
                 .WithMany(b => b.FluentBook)
                 .UsingEntity(b => b.ToTable("FluentBookFluentAuthor"));
 
+            // To achieve many to many here I've read the following sources by this order:
+            // https://www.rasikag.com/posts/ef-core-5-many-to-many-relationship
+            // https://dev.to/ruben_j/many-to-many-relations-in-entity-framework-core-3-1-and-5-59ei
+            // Saw this channel and could not find map function in ICollection :| 
+            // https://www.youtube.com/watch?v=GjmnHwCScRA&list=PLUU6Q8aGTpKV4bfIPiqGANF2OpbFbE0vl&index=23
+            // This arabic video which I understand nothing of, allowed me to see the pattern:
+            // https://youtu.be/PhTVKbApH0k?t=368 At this right time PostTagsTest as an example.
+            // This allowed me to skip Bruhen Patel's method of creating a third entity explicitely to achieve my end goal of a many to many relationship, by connecting two one to many relationships.
+            // Side question if I ever have an answer, why didn't map work though?
+            // https://www.xsprogram.com/content/creating-many-to-many-relationships-using-fluent-api-in-entity-framework.html
+
             // FluentAuthor
             modelBuilder.Entity<FluentAuthor>().HasKey(b => b.Author_Id);
             modelBuilder.Entity<FluentAuthor>().Property(b => b.FirstName).IsRequired();
