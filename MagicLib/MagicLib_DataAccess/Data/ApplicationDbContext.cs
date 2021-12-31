@@ -47,6 +47,10 @@ namespace MagicLib_DataAccess.Data
             modelBuilder.Entity<FluentBook>().HasOne(b => b.FluentBookDetail).WithOne(b => b.FluentBook).HasForeignKey<FluentBook>("BookDetail_Id");
             // One to many 1:* relationship between FluentBook and FluentPublisher
             modelBuilder.Entity<FluentBook>().HasOne(b => b.FluentPublisher).WithMany(b => b.FluentBook).HasForeignKey(b=>b.Publisher_Id);
+            // Many to many *:* relationship between FluentBook and FluentAuthor
+            modelBuilder.Entity<FluentBook>().HasMany(b => b.FluentAuthor)
+                .WithMany(b => b.FluentBook)
+                .UsingEntity(b => b.ToTable("FluentBookFluentAuthor"));
 
             // FluentAuthor
             modelBuilder.Entity<FluentAuthor>().HasKey(b => b.Author_Id);

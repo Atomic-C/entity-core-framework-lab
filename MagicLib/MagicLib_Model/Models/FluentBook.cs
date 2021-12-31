@@ -21,5 +21,6 @@ namespace MagicLib_Model.Models
         public int Publisher_Id { get; set; }
         public FluentPublisher FluentPublisher { get; set; } // "Within a Book there is one Publisher
 
+        public ICollection<FluentAuthor> FluentAuthor { get; set; }
     }
 }
