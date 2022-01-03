@@ -63,16 +63,16 @@ namespace MagicLib_DataAccess.Data
             // Side question if I ever have an answer, why didn't map work though?
             // https://www.xsprogram.com/content/creating-many-to-many-relationships-using-fluent-api-in-entity-framework.html
 
-            // FluentAuthor
-            modelBuilder.Entity<FluentAuthor>().HasKey(b => b.Author_Id);
-            modelBuilder.Entity<FluentAuthor>().Property(b => b.FirstName).IsRequired();
-            modelBuilder.Entity<FluentAuthor>().Property(b => b.LastName).IsRequired();
-            modelBuilder.Entity<FluentAuthor>().Ignore(b => b.FullName);
+            //// FluentAuthor
+            //modelBuilder.Entity<FluentAuthor>().HasKey(b => b.Author_Id);
+            //modelBuilder.Entity<FluentAuthor>().Property(b => b.FirstName).IsRequired();
+            //modelBuilder.Entity<FluentAuthor>().Property(b => b.LastName).IsRequired();
+            //modelBuilder.Entity<FluentAuthor>().Ignore(b => b.FullName);
 
-            // FluentPublisher
-            modelBuilder.Entity<FluentPublisher>().HasKey(b => b.Publisher_Id);
-            modelBuilder.Entity<FluentPublisher>().Property(b => b.Name).IsRequired();
-            modelBuilder.Entity<FluentPublisher>().Property(b => b.Location).IsRequired();
+            //// FluentPublisher
+            //modelBuilder.Entity<FluentPublisher>().HasKey(b => b.Publisher_Id);
+            //modelBuilder.Entity<FluentPublisher>().Property(b => b.Name).IsRequired();
+            //modelBuilder.Entity<FluentPublisher>().Property(b => b.Location).IsRequired();
 
         }
     }
