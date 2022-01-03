@@ -14,6 +14,8 @@ namespace MagicLib_DataAccess.FluentConfig
     {
         public void Configure(EntityTypeBuilder<FluentAuthor> modelBuilder)
         {
+            // Name Of Table
+
             // FluentAuthor
             modelBuilder.HasKey(b => b.Author_Id);
             modelBuilder.Property(b => b.FirstName).IsRequired();

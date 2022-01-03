@@ -13,6 +13,8 @@ namespace MagicLib_DataAccess.FluentConfig
     {
         public void Configure (EntityTypeBuilder<FluentPublisher> modelBuilder)
         {
+            // Name Of Table
+
             // FluentPublisher
             modelBuilder.HasKey(b => b.Publisher_Id);
             modelBuilder.Property(b => b.Name).IsRequired();
