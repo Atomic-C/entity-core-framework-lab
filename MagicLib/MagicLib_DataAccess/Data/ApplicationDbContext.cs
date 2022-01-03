@@ -1,4 +1,5 @@
-﻿using MagicLib_Model.Models;
+﻿using MagicLib_DataAccess.FluentConfig;
+using MagicLib_Model.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -76,7 +77,11 @@ namespace MagicLib_DataAccess.Data
 
             // Changes below were made after most models were comented above:
 
-
+            // moved everything to FluentConfig folder for better organization, left above code as "legacy"
+            modelBuilder.ApplyConfiguration(new FluentAuthorConfig());
+            modelBuilder.ApplyConfiguration(new FluentBookConfig());
+            modelBuilder.ApplyConfiguration(new FluentBookDetailsConfig());
+            modelBuilder.ApplyConfiguration(new FluentPublisherConfig());
 
         }
     }
