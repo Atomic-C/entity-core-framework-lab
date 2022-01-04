@@ -43,5 +43,28 @@ namespace MagicLib.Controllers
                 return View(obj); // Display it!
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Upsert(Category obj)
+        {
+            if (ModelState.IsValid)
+            {
+                if (obj.Category_Id == 0)
+                {
+                    // We're creating
+                    //_db.Add(obj); // Alternative to line below:
+                    _db.Categories.Add(obj);
+                }
+                else
+                {
+                    // We're updating then
+                    _db.Categories.Update(obj);
+                }
+                    _db.SaveChanges();
+                return RedirectToAction(nameof(Index)); // We return to our displayed list presuming
+            }
+            return View(obj); // Presuming modelstate is invalid we return back to the view, obj will display errors.
+        }
     }
 }
