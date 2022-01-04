@@ -21,5 +21,27 @@ namespace MagicLib.Controllers
             List<Category> categoryList = _db.Categories.ToList();
             return View(categoryList);
         }
+
+        public IActionResult Upsert(int? id)
+        {
+
+            Category obj = new Category();
+            
+            if (id == null) // Create
+            {
+                return View(obj);
+            }
+                obj = _db.Categories.FirstOrDefault(u => u.Category_Id == id);
+
+            if (obj == null) // If object is null(doesn't exist, duh)
+            {
+                return NotFound();
+            }
+            // Else, id is not null and we can edit!
+            else
+            {
+                return View(obj); // Display it!
+            }
+        }
     }
 }
