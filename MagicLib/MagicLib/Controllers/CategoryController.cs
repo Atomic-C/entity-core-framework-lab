@@ -75,5 +75,27 @@ namespace MagicLib.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult CreateMultiple2()
+        {
+            List<Category> catList = new List<Category>();
+            for (int i = 1; i <= 2; i++)
+            {
+                catList.Add(new Category { Name = Guid.NewGuid().ToString() });
+                //_db.Categories.Add(new Category { Name = Guid.NewGuid().ToString() }); // Using this without the list is the same.
+            }
+            _db.Categories.AddRange(catList);
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }       
+        public IActionResult CreateMultiple5()
+        {
+            for (int i = 1; i <= 5; i++)
+            {
+                _db.Categories.Add(new Category { Name = Guid.NewGuid().ToString() });
+            }
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
