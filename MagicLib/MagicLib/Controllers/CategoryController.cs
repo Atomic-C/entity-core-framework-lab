@@ -66,5 +66,14 @@ namespace MagicLib.Controllers
             }
             return View(obj); // Presuming modelstate is invalid we return back to the view, obj will display errors.
         }
+
+        public IActionResult Delete(int id)
+        {
+            var obj = _db.Categories.FirstOrDefault(u=>u.Category_Id==id);
+            _db.Categories.Remove(obj);
+            _db.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
