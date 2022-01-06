@@ -76,6 +76,15 @@ namespace MagicLib.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult DeleteWithoutPassingId()
+        {
+            List<Category> catList = _db.Categories.OrderByDescending(u => u.Category_Id).Take(1).ToList();
+            _db.Categories.RemoveRange(catList);
+            _db.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         public IActionResult CreateMultiple2()
         {
             List<Category> catList = new List<Category>();
@@ -98,7 +107,7 @@ namespace MagicLib.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult RemoveMultiple2() // update this method with list
+        public IActionResult RemoveMultiple2() 
         {
             //var obj = _db.Categories.OrderByDescending(u=>u.Category_Id).Take(2);
             List<Category> catList = _db.Categories.OrderByDescending(u => u.Category_Id).Take(2).ToList();
