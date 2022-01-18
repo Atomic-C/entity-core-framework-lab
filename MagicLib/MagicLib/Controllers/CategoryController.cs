@@ -29,8 +29,9 @@ namespace MagicLib.Controllers
             
             if (id == null) // Create
             {
-                return View(obj);
+                return View(obj); // Return object empty, since the user will fill the details then submit the button
             }
+                // If there'd an id, well, find it in db and retrive it! We must display to edit!
                 obj = _db.Categories.FirstOrDefault(u => u.Category_Id == id);
 
             if (obj == null) // If object is null(doesn't exist, duh)
@@ -46,9 +47,9 @@ namespace MagicLib.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(Category obj)
+        public IActionResult Upsert(Category obj) // We retrive the category object that was posted
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) // Verify if data annotation requirments are met
             {
                 if (obj.Category_Id == 0)
                 {
@@ -90,7 +91,9 @@ namespace MagicLib.Controllers
             List<Category> catList = new List<Category>();
             for (int i = 1; i <= 2; i++)
             {
-                catList.Add(new Category { Name = Guid.NewGuid().ToString() });
+                catList.Add(new Category { 
+                    Name = Guid.NewGuid().ToString()
+                });
                 //_db.Categories.Add(new Category { Name = Guid.NewGuid().ToString() }); // Using this without the list is the same.
             }
             _db.Categories.AddRange(catList);
@@ -101,7 +104,9 @@ namespace MagicLib.Controllers
         {
             for (int i = 1; i <= 5; i++)
             {
-                _db.Categories.Add(new Category { Name = Guid.NewGuid().ToString() });
+                _db.Categories.Add(new Category {
+                    Name = Guid.NewGuid().ToString()
+                });
             }
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
