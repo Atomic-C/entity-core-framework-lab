@@ -18,26 +18,20 @@ namespace MagicLib.Controllers
 
         public IActionResult Index()
         {
-
-
             return View(); // pass the list to the view
         }
 
         // GET for Upsert
         public IActionResult Upsert(int? id) // This populates decides which view we get
         {
-
             return View();
-
         }
         // POST for Upsert
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult UpsertPost(Author obj) // This method creates or updates Authors
         {
-
             return View();
-
         }
 
         public IActionResult Delete(int id)
