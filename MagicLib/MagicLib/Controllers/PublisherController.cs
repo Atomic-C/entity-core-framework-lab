@@ -18,7 +18,8 @@ namespace MagicLib.Controllers
         
         public IActionResult Index()
         {
-            return View(); // pass the list to the view
+            List<Publisher> publisherList = _db.Publishers.ToList();
+            return View(publisherList); // pass the list to the view
         }
 
         // GET for Upsert
