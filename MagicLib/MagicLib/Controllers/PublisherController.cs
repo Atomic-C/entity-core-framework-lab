@@ -25,6 +25,13 @@ namespace MagicLib.Controllers
         // GET for Upsert
         public IActionResult Upsert(int? id) // This populates decides which view we get
         {
+            Publisher publisherObject = new Publisher();
+
+            if (id == null)
+            {
+                return View(publisherObject);
+            }
+
                 return View();
         }       
         // POST for Upsert

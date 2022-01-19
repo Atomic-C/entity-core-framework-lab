@@ -12,9 +12,9 @@ namespace MagicLib_Model.Models
         [Key]
         public int Publisher_Id { get; set; }
         [Required]
-        public int Name { get; set; }
+        public string Name { get; set; }
         [Required]
-        public int Location { get; set; }
+        public string Location { get; set; }
 
         public List<Book> Book { get; set; }
     }
