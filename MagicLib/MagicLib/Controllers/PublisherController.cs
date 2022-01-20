@@ -79,6 +79,11 @@ namespace MagicLib.Controllers
 
         public IActionResult Delete(int id)
         {
+            Publisher publisherObj = _db.Publishers.FirstOrDefault(u=>u.Publisher_Id == id);
+
+            _db.Publishers.Remove(publisherObj);
+            _db.SaveChanges();
+
             return RedirectToAction(nameof(Index));
         }
     }
