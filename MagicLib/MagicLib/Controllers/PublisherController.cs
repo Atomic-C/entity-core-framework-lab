@@ -15,7 +15,7 @@ namespace MagicLib.Controllers
         {
             _db = db;
         }
-        
+
         public IActionResult Index()
         {
             List<Publisher> publisherList = _db.Publishers.ToList();
@@ -34,7 +34,7 @@ namespace MagicLib.Controllers
                 return View(publisherObject);
             }
 
-            publisherObject = _db.Publishers.FirstOrDefault(u=>u.Publisher_Id == id);
+            publisherObject = _db.Publishers.FirstOrDefault(u => u.Publisher_Id == id);
 
             if (publisherObject == null) // Safe guard for URL trols at this point
             {
@@ -45,13 +45,36 @@ namespace MagicLib.Controllers
             {
                 return View(publisherObject);
             }
-        }       
+        }
+
+        /// <summary> 
+        /// Takes Publisher obj passed in the post method form from Upsert View 
+        /// <para>Verify if data annotation requirments are met</para> 
+        /// <para>If Id is null we create</para> 
+        /// <para>If Id is populated, we're editing</para> 
+        /// </summary> 
         // POST for Upsert
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UpsertPost(Publisher obj) // This method creates or updates Publishers
+        public IActionResult UpsertPost(Publisher obj)
         {
-                return View();
+            if (ModelState.IsValid)
+            {
+
+                if (obj.Publisher_Id == 0)
+                {
+                    _db.Publishers.Add(obj);
+                }
+                else
+                {
+                    _db.Publishers.Update(obj);
+                }
+
+                _db.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(obj);
         }
 
         public IActionResult Delete(int id)
