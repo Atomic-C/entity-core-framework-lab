@@ -23,16 +23,28 @@ namespace MagicLib.Controllers
         }
 
         // GET for Upsert
-        public IActionResult Upsert(int? id) // This populates decides which view we get
+        public IActionResult Upsert(int? id) // Show empty object if id is null, show populated object from db if id isn't null
         {
             Publisher publisherObject = new Publisher();
 
             if (id == null)
             {
+                //publisherObject.Name = "Rename me";
+                //publisherObject.Location = "Pedro was here too!";
                 return View(publisherObject);
             }
 
-                return View();
+            publisherObject = _db.Publishers.FirstOrDefault(u=>u.Publisher_Id == id);
+
+            if (publisherObject == null) // Safe guard for URL trols at this point
+            {
+                return NotFound();
+            }
+
+            else // if (id != null)
+            {
+                return View(publisherObject);
+            }
         }       
         // POST for Upsert
         [HttpPost]

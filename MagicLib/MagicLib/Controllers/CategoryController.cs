@@ -22,6 +22,7 @@ namespace MagicLib.Controllers
             return View(categoryList);
         }
 
+        // GET for Upsert
         public IActionResult Upsert(int? id)
         {
 
