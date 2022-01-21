@@ -25,7 +25,23 @@ namespace MagicLib.Controllers
         // GET for Upsert
         public IActionResult Upsert(int? id) // This populates decides which view we get
         {
-            return View();
+            Author authorObject = new Author();
+
+            if (id == null)
+            {
+                return View(authorObject);
+            }
+               authorObject = _db.Authors.FirstOrDefault(u=>u.Author_Id == id);
+
+            if (authorObject == null)
+            {
+                return NotFound();
+            }
+
+            else
+            {
+                 return View(authorObject);
+            }
         }
         // POST for Upsert
         [HttpPost]
