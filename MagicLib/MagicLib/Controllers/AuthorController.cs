@@ -67,6 +67,12 @@ namespace MagicLib.Controllers
 
         public IActionResult Delete(int id)
         {
+            Author authorOject =_db.Authors.FirstOrDefault(u => u.Author_Id == id);
+
+            _db.Authors.Remove(authorOject);
+
+            _db.SaveChanges();
+
             return RedirectToAction(nameof(Index));
         }
 
