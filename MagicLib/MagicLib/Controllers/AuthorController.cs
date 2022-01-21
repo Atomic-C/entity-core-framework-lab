@@ -49,9 +49,8 @@ namespace MagicLib.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult UpsertPost(Author obj) // This method creates or updates Authors
         {
-            if (true)
+            if (ModelState.IsValid)
             {
-
                 if (obj.Author_Id == 0)
                 {
                     _db.Authors.Add(obj);
@@ -60,10 +59,10 @@ namespace MagicLib.Controllers
                 {
                     _db.Authors.Update(obj);
                 }
-                _db.SaveChanges();
-
+                     _db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
+            return View(obj);
         }
 
         public IActionResult Delete(int id)
