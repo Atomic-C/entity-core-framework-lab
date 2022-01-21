@@ -31,7 +31,7 @@ namespace MagicLib.Controllers
             {
                 return View(authorObject);
             }
-               authorObject = _db.Authors.FirstOrDefault(u=>u.Author_Id == id);
+            authorObject = _db.Authors.FirstOrDefault(u => u.Author_Id == id);
 
             if (authorObject == null)
             {
@@ -40,15 +40,30 @@ namespace MagicLib.Controllers
 
             else
             {
-                 return View(authorObject);
+                return View(authorObject);
             }
         }
+
         // POST for Upsert
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult UpsertPost(Author obj) // This method creates or updates Authors
         {
-            return View();
+            if (true)
+            {
+
+                if (obj.Author_Id == 0)
+                {
+                    _db.Authors.Add(obj);
+                }
+                else
+                {
+                    _db.Authors.Update(obj);
+                }
+                _db.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         public IActionResult Delete(int id)
