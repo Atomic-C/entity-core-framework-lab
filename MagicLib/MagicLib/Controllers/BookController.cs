@@ -1,10 +1,13 @@
 ﻿using MagicLib_DataAccess.Data;
 using MagicLib_Model.Models;
+using MagicLib_Model.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.WebPages.Html;
 
 namespace MagicLib.Controllers
 {
@@ -22,30 +25,35 @@ namespace MagicLib.Controllers
             return View(bookList); // pass the list to the view
         }
 
-        //// GET for Upsert
-        //public IActionResult Upsert(int? id) // Show empty object if id is null, show populated object from db if id isn't null
-        //{
-        //    Book bookObject = new Book();
+        // GET for Upsert
+        public IActionResult Upsert(int? id) // Show empty object if id is null, show populated object from db if id isn't null
+        {
+            BookViewModel bookObject = new BookViewModel();
+            bookObject.PublisherList = _db.Publishers.Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Publisher_Id.ToString()
+            }); // This is a projection :o
 
-        //    if (id == null)
-        //    {
-        //        //publisherObject.Name = "Rename me";
-        //        //publisherObject.Location = "Pedro was here too!";
-        //        return View(bookObject);
-        //    }
+            if (id == null)
+            {
+                //publisherObject.Name = "Rename me";
+                //publisherObject.Location = "Pedro was here too!";
+                return View(bookObject);
+            }
 
-        //    bookObject = _db.Books.FirstOrDefault(u => u.Book_Id == id);
+            bookObject.Book = _db.Books.FirstOrDefault(u => u.Book_Id == id);
 
-        //    if (bookObject == null) // Safe guard for URL trols at this point
-        //    {
-        //        return NotFound();
-        //    }
+            if (bookObject == null) // Safe guard for URL trols at this point
+            {
+                return NotFound();
+            }
 
-        //    else // if (id != null)
-        //    {
-        //        return View(bookObject);
-        //    }
-        //}
+            else // if (id != null)
+            {
+                return View(bookObject);
+            }
+        }
 
         ///// <summary> 
         ///// Takes Publisher obj passed in the post method form from Upsert View 
