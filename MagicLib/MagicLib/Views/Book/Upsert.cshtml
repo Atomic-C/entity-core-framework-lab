@@ -6,7 +6,7 @@
     <div class="row p-3 border">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Book.Book_Id" />
-        @if (Model.Book == null || Model.Book.Book_Id != 0)
+        @if (Model.Book != null)
         {
             //edit
             title = "Edit Book";
