@@ -15,7 +15,6 @@ namespace MagicLib_Model.Models
         public string Name { get; set; }
         [Required]
         public string Location { get; set; }
-
         public List<Book> Book { get; set; }
     }
 }

@@ -4,14 +4,16 @@ using MagicLib_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MagicLib_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220125195403_MadeBookDetailIdNotNullableInBookTable")]
+    partial class MadeBookDetailIdNotNullableInBookTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +84,7 @@ namespace MagicLib_DataAccess.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("BookDetail_Id")
+                    b.Property<int>("BookDetail_Id")
                         .HasColumnType("int");
 
                     b.Property<string>("ISBN")
@@ -103,8 +105,7 @@ namespace MagicLib_DataAccess.Migrations
                     b.HasKey("Book_Id");
 
                     b.HasIndex("BookDetail_Id")
-                        .IsUnique()
-                        .HasFilter("[BookDetail_Id] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("Publisher_Id");
 
@@ -321,7 +322,9 @@ namespace MagicLib_DataAccess.Migrations
                 {
                     b.HasOne("MagicLib_Model.Models.BookDetail", "BookDetail")
                         .WithOne("Book")
-                        .HasForeignKey("MagicLib_Model.Models.Book", "BookDetail_Id");
+                        .HasForeignKey("MagicLib_Model.Models.Book", "BookDetail_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MagicLib_Model.Models.Publisher", "Publisher")
                         .WithMany("Book")

@@ -22,6 +22,14 @@ namespace MagicLib.Controllers
         public IActionResult Index()
         {
             List<Book> bookList = _db.Books.ToList();
+            foreach (var item in bookList)
+            {
+                // Least efficient
+                //item.Publisher = _db.Publishers.FirstOrDefault(u=>u.Publisher_Id == item.Publisher_Id);
+
+                // Eager loading more efficient yeeeeeeeee ^^
+                _db.Entry(item).Reference(u => u.Publisher).Load(); // This is how we load publisher so view can be populated.
+            }
             return View(bookList); // pass the list to the view
         }
 
@@ -32,7 +40,7 @@ namespace MagicLib.Controllers
             bookObject.PublisherList = _db.Publishers.Select(i => new SelectListItem
             {
                 Text = i.Name,
-                Value = i.Publisher_Id.ToString()
+                Value = i.Publisher_Id.ToString(),
             }); // This is a projection :o
 
             if (id == null)
@@ -55,44 +63,44 @@ namespace MagicLib.Controllers
             }
         }
 
-        ///// <summary> 
-        ///// Takes Publisher obj passed in the post method form from Upsert View 
-        ///// <para>Verify if data annotation requirments are met</para> 
-        ///// <para>If Id is null we create</para> 
-        ///// <para>If Id is populated, we're editing</para> 
-        ///// </summary> 
-        //// POST for Upsert
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult UpsertPost(Book obj)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
+        /// <summary> 
+        /// Takes BookViewModel obj passed in the post method form from Upsert View 
+        /// <para>Verify if data annotation requirments are met</para> 
+        /// <para>If Id is null we create</para> 
+        /// <para>If Id is populated, we're editing</para> 
+        /// </summary> 
+        // POST for Upsert
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpsertPost(BookViewModel obj)
+        {
+            //if (ModelState.IsValid)
+            //{
+                if (obj.Book.Book_Id == 0)
+                {
+                    _db.Books.Add(obj.Book);
+                }
+                else
+                {
+                    _db.Books.Update(obj.Book);
+                }
 
-        //        if (obj.Book_Id == 0)
-        //        {
-        //            _db.Books.Add(obj);
-        //        }
-        //        else
-        //        {
-        //            _db.Books.Update(obj);
-        //        }
+                _db.SaveChanges();
 
-        //        _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
 
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(obj);
-        //}
+            //}
+            //return View(obj);
+        }
 
-        //public IActionResult Delete(int id)
-        //{
-        //    Book bookObj = _db.Books.FirstOrDefault(u => u.Book_Id == id);
+        public IActionResult Delete(int id)
+        {
+            Book bookObj = _db.Books.FirstOrDefault(u => u.Book_Id == id);
 
-        //    _db.Books.Remove(bookObj);
-        //    _db.SaveChanges();
+            _db.Books.Remove(bookObj);
+            _db.SaveChanges();
 
-        //    return RedirectToAction(nameof(Index));
-        //}
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
