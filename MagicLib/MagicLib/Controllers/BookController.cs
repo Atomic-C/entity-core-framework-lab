@@ -27,7 +27,7 @@ namespace MagicLib.Controllers
                 // Least efficient
                 //item.Publisher = _db.Publishers.FirstOrDefault(u=>u.Publisher_Id == item.Publisher_Id);
 
-                // Eager loading more efficient yeeeeeeeee ^^
+                // Explicit loading more efficient yeeeeeeeee ^^
                 _db.Entry(item).Reference(u => u.Publisher).Load(); // This is how we load publisher so view can be populated.
             }
             return View(bookList); // pass the list to the view
@@ -88,6 +88,72 @@ namespace MagicLib.Controllers
                 _db.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
+
+            //}
+            //return View(obj);
+        }
+
+        // GET for Details
+        public IActionResult Details(int? id) // Show empty object if id is null, show populated object from db if id isn't null
+        {
+            BookViewModel bookObject = new BookViewModel();
+            //bookObject.PublisherList = _db.Publishers.Select(i => new SelectListItem
+            //{
+            //    Text = i.Name,
+            //    Value = i.Publisher_Id.ToString(),
+            //}); // This is a projection :o
+
+            if (id == null)
+            {
+                //publisherObject.Name = "Rename me";
+                //publisherObject.Location = "Pedro was here too!";
+                return View(bookObject);
+            }
+
+            bookObject.Book = _db.Books.FirstOrDefault(u => u.Book_Id == id);
+            bookObject.Book.BookDetail = _db.BookDetails.FirstOrDefault(u => u.BookDetail_Id == bookObject.Book.BookDetail_Id);
+
+
+            if (bookObject == null) // Safe guard for URL trols at this point
+            {
+                return NotFound();
+            }
+
+            else // if (id != null)
+            {
+                return View(bookObject);
+            }
+        }
+
+        /// <summary> 
+        /// Takes BookViewModel obj passed in the post method form from Upsert View 
+        /// <para>Verify if data annotation requirments are met</para> 
+        /// <para>If Id is null we create</para> 
+        /// <para>If Id is populated, we're editing</para> 
+        /// </summary> 
+        // POST for DetailsPost
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DetailsPost(BookViewModel obj)
+        {
+            //if (ModelState.IsValid)
+            //{
+            if (obj.Book.BookDetail.BookDetail_Id == 0)
+            {
+                _db.BookDetails.Add(obj.Book.BookDetail);
+                _db.SaveChanges();
+
+            }
+            else
+            {
+                _db.BookDetails.Update(obj.Book.BookDetail);
+                _db.SaveChanges();
+
+            }
+            Book bookFromDb = _db.Books.FirstOrDefault(u => u.Book_Id == obj.Book.Book_Id);
+            _db.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
 
             //}
             //return View(obj);
