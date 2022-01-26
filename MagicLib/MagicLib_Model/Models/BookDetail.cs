@@ -12,7 +12,7 @@ namespace MagicLib_Model.Models
         [Key]
         public int BookDetail_Id { get; set; }
         [Required]
-        public int NumberOfCapters { get; set; }
+        public int NumberOfChapters { get; set; }
         public int NumberOfPages { get; set; }
         public int Weight { get; set; }
 
