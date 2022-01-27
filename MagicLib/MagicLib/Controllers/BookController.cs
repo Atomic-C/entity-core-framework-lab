@@ -143,6 +143,9 @@ namespace MagicLib.Controllers
                 _db.BookDetails.Add(obj.Book.BookDetail);
                 _db.SaveChanges();
 
+                var BookFromDb = _db.Books.FirstOrDefault(u => u.Book_Id == obj.Book.Book_Id);
+                BookFromDb.BookDetail_Id = obj.Book.BookDetail.BookDetail_Id;
+                _db.SaveChanges();
             }
             else
             {
@@ -150,8 +153,7 @@ namespace MagicLib.Controllers
                 _db.SaveChanges();
 
             }
-            Book bookFromDb = _db.Books.FirstOrDefault(u => u.Book_Id == obj.Book.Book_Id);
-            _db.SaveChanges();
+
 
             return RedirectToAction(nameof(Index));
 
