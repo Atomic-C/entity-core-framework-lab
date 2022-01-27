@@ -83,6 +83,7 @@ namespace MagicLib.Controllers
                 else
                 {
                     _db.Books.Update(obj.Book);
+
                 }
 
                 _db.SaveChanges();
@@ -97,11 +98,7 @@ namespace MagicLib.Controllers
         public IActionResult Details(int? id) // Show empty object if id is null, show populated object from db if id isn't null
         {
             BookViewModel bookObject = new BookViewModel();
-            //bookObject.PublisherList = _db.Publishers.Select(i => new SelectListItem
-            //{
-            //    Text = i.Name,
-            //    Value = i.Publisher_Id.ToString(),
-            //}); // This is a projection :o
+
 
             if (id == null)
             {
@@ -110,8 +107,8 @@ namespace MagicLib.Controllers
                 return View(bookObject);
             }
 
-            bookObject.Book = _db.Books.FirstOrDefault(u => u.Book_Id == id);
-            bookObject.Book.BookDetail = _db.BookDetails.FirstOrDefault(u => u.BookDetail_Id == bookObject.Book.BookDetail_Id);
+            bookObject.Book = _db.Books.FirstOrDefault(u => u.Book_Id == id); // We retrive book here
+            bookObject.Book.BookDetail = _db.BookDetails.FirstOrDefault(u => u.BookDetail_Id == bookObject.Book.BookDetail_Id); // We must manually update bookdetail here
 
 
             if (bookObject == null) // Safe guard for URL trols at this point
@@ -140,12 +137,13 @@ namespace MagicLib.Controllers
             //{
             if (obj.Book.BookDetail.BookDetail_Id == 0)
             {
-                _db.BookDetails.Add(obj.Book.BookDetail);
+                _db.BookDetails.Add(obj.Book.BookDetail); // When we save BookDetail
                 _db.SaveChanges();
 
-                var BookFromDb = _db.Books.FirstOrDefault(u => u.Book_Id == obj.Book.Book_Id);
-                BookFromDb.BookDetail_Id = obj.Book.BookDetail.BookDetail_Id;
-                _db.SaveChanges();
+                Book BookFromDb = _db.Books.FirstOrDefault(u => u.Book_Id == obj.Book.Book_Id); // Todo: play with this
+                BookFromDb.BookDetail_Id = obj.Book.BookDetail.BookDetail_Id; // We have to retrive id of the new BookDetail that was saved.
+                _db.SaveChanges(); // And save it on the Book table.
+                // Chapter 6 lesson 5
             }
             else
             {
