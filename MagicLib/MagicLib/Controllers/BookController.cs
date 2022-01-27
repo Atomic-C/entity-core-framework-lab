@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace MagicLib.Controllers
 {
@@ -21,17 +22,19 @@ namespace MagicLib.Controllers
 
         public IActionResult Index()
         {
-            List<Book> bookList = _db.Books.ToList();
-            foreach (var item in bookList)
-            {
-                // Least efficient
-                //item.Publisher = _db.Publishers.FirstOrDefault(u=>u.Publisher_Id == item.Publisher_Id);
+            List<Book> bookList = _db.Books.Include(u => u.Publisher).ToList(); // This is eager loading, best otimization! We retrive Publisher
+            //foreach (var item in bookList) // This is N + 1 execution.
+            //{
+            //    // Least efficient
+            //    //item.Publisher = _db.Publishers.FirstOrDefault(u=>u.Publisher_Id == item.Publisher_Id);
 
-                // Explicit loading more efficient yeeeeeeeee ^^
-                _db.Entry(item).Reference(u => u.Publisher).Load(); // This is how we load publisher so view can be populated.
-            }
+            //    // Explicit loading more efficient yeeeeeeeee ^^
+            //    _db.Entry(item).Reference(u => u.Publisher).Load(); // This is how we load publisher so view can be populated.
+            //}
             return View(bookList); // pass the list to the view
         }
+        // Chapter 6 4, includes explicit loading.
+        // Chapter 6 7, for eager loading.
 
         // GET for Upsert
         public IActionResult Upsert(int? id) // Show empty object if id is null, show populated object from db if id isn't null
@@ -106,9 +109,11 @@ namespace MagicLib.Controllers
                 //publisherObject.Location = "Pedro was here too!";
                 return View(bookObject);
             }
+            bookObject.Book = _db.Books.Include(u => u.BookDetail).FirstOrDefault(u=>u.Book_Id == id); // We retrive book and update bookdetail!
 
-            bookObject.Book = _db.Books.FirstOrDefault(u => u.Book_Id == id); // We retrive book here
-            bookObject.Book.BookDetail = _db.BookDetails.FirstOrDefault(u => u.BookDetail_Id == bookObject.Book.BookDetail_Id); // We must manually update bookdetail here
+            // Old way below
+            //bookObject.Book = _db.Books.FirstOrDefault(u => u.Book_Id == id); // We retrive book here
+            //bookObject.Book.BookDetail = _db.BookDetails.FirstOrDefault(u => u.BookDetail_Id == bookObject.Book.BookDetail_Id); // We must manually update bookdetail here
 
 
             if (bookObject == null) // Safe guard for URL trols at this point
