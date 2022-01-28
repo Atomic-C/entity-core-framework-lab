@@ -77,16 +77,22 @@ namespace MagicLib.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult UpsertPost(BookViewModel obj)
         {
-            //if (ModelState.IsValid)
+            //if (ModelState.IsValid) // TODO: Figure out why validation gives an error
             //{
-                if (obj.Book.Book_Id == 0)
+
+            //TODO: Figure out how to retrive BookDetail_Id without The instance of entity type 'Book' cannot be tracked because another instance with the same key value for {'Book_Id'} is already being tracked.
+
+            //var BookFromDb = _db.Books.FirstOrDefault(u=>u.Book_Id == obj.Book.Book_Id); // To get BookDetail_Id...
+            //obj.Book.BookDetail_Id = BookFromDb.BookDetail_Id; // We assign the BookDetail_Id and solved!
+
+            if (obj.Book.Book_Id == 0)
                 {
-                    _db.Books.Add(obj.Book);
+                    _db.Books.Add(obj.Book); // When we save Book, creating a Book_Id
                 }
                 else
                 {
                     _db.Books.Update(obj.Book);
-
+                    
                 }
 
                 _db.SaveChanges();
@@ -142,11 +148,12 @@ namespace MagicLib.Controllers
             //{
             if (obj.Book.BookDetail.BookDetail_Id == 0)
             {
-                _db.BookDetails.Add(obj.Book.BookDetail); // When we save BookDetail
-                _db.SaveChanges();
+                _db.BookDetails.Add(obj.Book.BookDetail); // When we save BookDetail, creating a BookDetail_Id
 
-                Book BookFromDb = _db.Books.FirstOrDefault(u => u.Book_Id == obj.Book.Book_Id); // Todo: play with this
-                BookFromDb.BookDetail_Id = obj.Book.BookDetail.BookDetail_Id; // We have to retrive id of the new BookDetail that was saved.
+                _db.SaveChanges(); // Note that BookDetail_Id was empty before this statement was executed
+
+                Book BookFromDb = _db.Books.FirstOrDefault(u => u.Book_Id == obj.Book.Book_Id); // Load and store book here
+                BookFromDb.BookDetail_Id = obj.Book.BookDetail.BookDetail_Id; // We have to retrive id of the new BookDetail that was saved and update BookFromDb
                 _db.SaveChanges(); // And save it on the Book table.
                 // Chapter 6 lesson 5
             }
@@ -156,7 +163,8 @@ namespace MagicLib.Controllers
                 _db.SaveChanges();
 
             }
-
+            // When ever we save a record in BookDetail we have to update the corresponding value inside the Book else it shows NULL
+            // When a Book is added .Add() , we need to know what is the new BookDetail_Id that was created.
 
             return RedirectToAction(nameof(Index));
 
