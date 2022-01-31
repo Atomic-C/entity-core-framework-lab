@@ -211,6 +211,12 @@ namespace MagicLib.Controllers
 
             var bookCount2 = _db.Books.Count();
 
+            IEnumerable<Book> BookList = _db.Books; 
+            List<Book> filteredBook1 = BookList.Where(b => b.Price > 1).ToList(); // Filters in memory, loads server
+
+            IQueryable<Book> BookList2 = _db.Books;
+            List<Book> filteredBook2 = BookList2.Where(b => b.Price > 1).ToList(); // Filters in database, less server load. <= Use it
+
             return RedirectToAction(nameof(Index)); // We can do this redirect also when we don't a view associated with method
         }
     }
