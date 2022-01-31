@@ -84,7 +84,7 @@ namespace MagicLib.Controllers
 
             //var BookFromDb = _db.Books.FirstOrDefault(u=>u.Book_Id == obj.Book.Book_Id); // To get BookDetail_Id...
             //obj.Book.BookDetail_Id = BookFromDb.BookDetail_Id; // We assign the BookDetail_Id and solved!
-
+            obj.Book = _db.Books.Include(u => u.BookDetail).FirstOrDefault(u=>u.Book_Id == obj.Book.Book_Id); // Eager loading fixes the BookDetail_Id being null, now we no longer lose BookDetail when editing book! 
             if (obj.Book.Book_Id == 0)
                 {
                     _db.Books.Add(obj.Book); // When we save Book, creating a Book_Id
@@ -180,6 +180,38 @@ namespace MagicLib.Controllers
             _db.SaveChanges();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        /// <summary> 
+        /// Differed execution function examples 
+        /// <para>So that I can understand at what stage differed execution is taking place</para> 
+        /// <para>So I can force it's execution at place where I want it.</para> 
+        /// </summary> 
+        public IActionResult PlayGround ()
+        {
+            var bookTemp = _db.Books.FirstOrDefault();
+            bookTemp.Price = 100;
+
+            var bookCollection = _db.Books;
+            double totalPrice = 0;
+
+            foreach (var book in bookCollection)
+            {
+                totalPrice += book.Price;
+            }
+
+            var bookList = _db.Books.ToList();
+            foreach (var book in bookList)
+            {
+                totalPrice += book.Price;
+            }
+
+            var bookCollection2 = _db.Books;
+            var bookCount1 = bookCollection2.Count();
+
+            var bookCount2 = _db.Books.Count();
+
+            return RedirectToAction(nameof(Index)); // We can do this redirect also when we don't a view associated with method
         }
     }
 }
