@@ -80,11 +80,18 @@ namespace MagicLib.Controllers
             //if (ModelState.IsValid) // TODO: Figure out why validation gives an error
             //{
 
-            //TODO: Figure out how to retrive BookDetail_Id without The instance of entity type 'Book' cannot be tracked because another instance with the same key value for {'Book_Id'} is already being tracked.
+            // AsNoTracking: Solves "The instance of entity type 'Book' cannot be tracked because another instance with the same key value for {'Book_Id'} is already being tracked."
 
-            //var BookFromDb = _db.Books.FirstOrDefault(u=>u.Book_Id == obj.Book.Book_Id); // To get BookDetail_Id...
-            //obj.Book.BookDetail_Id = BookFromDb.BookDetail_Id; // We assign the BookDetail_Id and solved!
-            obj.Book = _db.Books.Include(u => u.BookDetail).FirstOrDefault(u=>u.Book_Id == obj.Book.Book_Id); // Eager loading fixes the BookDetail_Id being null, now we no longer lose BookDetail when editing book! 
+            Book BookFromDb = _db.Books.AsNoTracking().FirstOrDefault(u=>u.Book_Id == obj.Book.Book_Id); // Get BookFromDb...
+            obj.Book.BookDetail_Id = BookFromDb.BookDetail_Id; // We assign the BookDetail_Id and solved! No more Null!!
+            
+
+            //IQueryable<Book> BookList2 = _db.Books; // Works to get BookDetail_Id
+            //List<Book> filteredBookDetails = BookList2.AsNoTracking().Where(b => b.Book_Id == obj.Book.Book_Id).ToList(); // *
+            //obj.Book.BookDetail_Id = filteredBookDetails.ElementAt(0).BookDetail_Id;
+
+            //obj.Book = _db.Books.Include(u => u.BookDetail).FirstOrDefault(u=>u.Book_Id == obj.Book.Book_Id); // Eager loading fixes the BookDetail_Id being null, now we no longer lose BookDetail when editing book! 
+
             if (obj.Book.Book_Id == 0)
                 {
                     _db.Books.Add(obj.Book); // When we save Book, creating a Book_Id
