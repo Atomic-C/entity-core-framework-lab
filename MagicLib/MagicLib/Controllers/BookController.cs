@@ -196,33 +196,48 @@ namespace MagicLib.Controllers
         /// </summary> 
         public IActionResult PlayGround ()
         {
-            var bookTemp = _db.Books.FirstOrDefault();
-            bookTemp.Price = 100;
+            //var bookTemp = _db.Books.FirstOrDefault();
+            //bookTemp.Price = 100;
 
-            var bookCollection = _db.Books;
-            double totalPrice = 0;
+            //var bookCollection = _db.Books;
+            //double totalPrice = 0;
 
-            foreach (var book in bookCollection)
-            {
-                totalPrice += book.Price;
-            }
+            //foreach (var book in bookCollection)
+            //{
+            //    totalPrice += book.Price;
+            //}
 
-            var bookList = _db.Books.ToList();
-            foreach (var book in bookList)
-            {
-                totalPrice += book.Price;
-            }
+            //var bookList = _db.Books.ToList();
+            //foreach (var book in bookList)
+            //{
+            //    totalPrice += book.Price;
+            //}
 
-            var bookCollection2 = _db.Books;
-            var bookCount1 = bookCollection2.Count();
+            //var bookCollection2 = _db.Books;
+            //var bookCount1 = bookCollection2.Count();
 
-            var bookCount2 = _db.Books.Count();
+            //var bookCount2 = _db.Books.Count();
 
-            IEnumerable<Book> BookList = _db.Books; 
-            List<Book> filteredBook1 = BookList.Where(b => b.Price > 1).ToList(); // Filters in memory, loads server
+            //IEnumerable<Book> BookList = _db.Books; 
+            //List<Book> filteredBook1 = BookList.Where(b => b.Price > 1).ToList(); // Filters in memory, loads server
 
-            IQueryable<Book> BookList2 = _db.Books;
-            List<Book> filteredBook2 = BookList2.Where(b => b.Price > 1).ToList(); // Filters in database, less server load. <= Use it
+            //IQueryable<Book> BookList2 = _db.Books;
+            //List<Book> filteredBook2 = BookList2.Where(b => b.Price > 1).ToList(); // Filters in database, less server load. <= Use it
+
+            // Updating related data
+            Book bookThePowerOfNow = _db.Books.Include(b => b.BookDetail).FirstOrDefault(b=>b.Book_Id == 9);
+            bookThePowerOfNow.BookDetail.NumberOfChapters = 1000;
+            _db.Books.Update(bookThePowerOfNow);
+            _db.SaveChanges();
+
+            Book bookAtomicHabits = _db.Books.Include(b => b.BookDetail).FirstOrDefault(b=>b.Book_Id == 11);
+            bookAtomicHabits.BookDetail.NumberOfPages = 5000;
+            _db.Books.Attach(bookAtomicHabits); // updates only BookDetails! not all Book like Update()
+            _db.SaveChanges();
+            // If something on unchanged state is modified, attach will change the state to modified as well.
+
+
+            // Todo: Figure out more differences between Attach() and Update()
 
             return RedirectToAction(nameof(Index)); // We can do this redirect also when we don't a view associated with method
         }
