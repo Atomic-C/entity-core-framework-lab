@@ -224,6 +224,12 @@ namespace MagicLib.Controllers
             //IQueryable<Book> BookList2 = _db.Books;
             //List<Book> filteredBook2 = BookList2.Where(b => b.Price > 1).ToList(); // Filters in database, less server load. <= Use it
 
+            // Here we change the entity state
+            var category = _db.Categories.FirstOrDefault();
+            _db.Entry(category).State = EntityState.Modified; // This is how to manually change entity state, this is manually updating 
+
+            _db.SaveChanges(); 
+
             // Updating related data
             Book bookThePowerOfNow = _db.Books.Include(b => b.BookDetail).FirstOrDefault(b=>b.Book_Id == 9);
             bookThePowerOfNow.BookDetail.NumberOfChapters = 1000;
