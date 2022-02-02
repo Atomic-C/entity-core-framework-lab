@@ -189,6 +189,15 @@ namespace MagicLib.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //public IActionResult ManageAuthors (int id)
+        //{
+        //    AuthorBookViewModel authorBookViewModel = new AuthorBookViewModel
+        //    {
+
+        //    }
+        //    return RedirectToAction(nameof(Index));
+        //}
+
         /// <summary> 
         /// Differed execution function examples 
         /// <para>So that I can understand at what stage differed execution is taking place</para> 
