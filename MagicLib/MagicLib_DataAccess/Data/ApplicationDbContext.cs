@@ -21,7 +21,7 @@ namespace MagicLib_DataAccess.Data
        public DbSet<Author> Authors { get; set; } 
        public DbSet<Publisher> Publishers { get; set; } 
        public DbSet<BookDetail> BookDetails { get; set; }
-       public  DbSet<AuthorBook> AuthorBooks { get; set; }
+       //public  DbSet<AuthorBook> AuthorBooks { get; set; }
         public DbSet<FluentBookDetail> FluentBookDetail { get; set; } 
        public DbSet<FluentBook> FluentBooks { get; set; }
        public DbSet<FluentAuthor> FluentAuthors { get; set; }
