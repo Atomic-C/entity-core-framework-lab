@@ -4,14 +4,16 @@ using MagicLib_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MagicLib_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220204001559_changedManyToManyAuthorBookToExplicitMappingTable")]
+    partial class changedManyToManyAuthorBookToExplicitMappingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,9 +70,17 @@ namespace MagicLib_DataAccess.Migrations
                     b.Property<int>("Book_Id")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Author_Id1")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Book_Id1")
+                        .HasColumnType("int");
+
                     b.HasKey("Author_Id", "Book_Id");
 
-                    b.HasIndex("Book_Id");
+                    b.HasIndex("Author_Id1");
+
+                    b.HasIndex("Book_Id1");
 
                     b.ToTable("AuthorBookMT");
                 });
@@ -306,15 +316,11 @@ namespace MagicLib_DataAccess.Migrations
                 {
                     b.HasOne("MagicLib_Model.Models.Author", "Author")
                         .WithMany("AuthorBookMT")
-                        .HasForeignKey("Author_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Author_Id1");
 
                     b.HasOne("MagicLib_Model.Models.Book", "Book")
                         .WithMany("AuthorBookMT")
-                        .HasForeignKey("Book_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Book_Id1");
 
                     b.Navigation("Author");
 

@@ -21,7 +21,7 @@ namespace MagicLib_DataAccess.Data
        public DbSet<Author> Authors { get; set; } 
        public DbSet<Publisher> Publishers { get; set; } 
        public DbSet<BookDetail> BookDetails { get; set; }
-       //public  DbSet<AuthorBook> AuthorBooks { get; set; }
+       public  DbSet<AuthorBookMT> AuthorBookMT { get; set; }
         public DbSet<FluentBookDetail> FluentBookDetail { get; set; } 
        public DbSet<FluentBook> FluentBooks { get; set; }
        public DbSet<FluentAuthor> FluentAuthors { get; set; }
@@ -75,6 +75,9 @@ namespace MagicLib_DataAccess.Data
             //modelBuilder.Entity<FluentPublisher>().HasKey(b => b.Publisher_Id);
             //modelBuilder.Entity<FluentPublisher>().Property(b => b.Name).IsRequired();
             //modelBuilder.Entity<FluentPublisher>().Property(b => b.Location).IsRequired();
+
+            // Composite key for AutorBookMt
+            modelBuilder.Entity<AuthorBookMT>().HasKey(b => new { b.Author_Id,b.Book_Id });
 
             // Changes below were made after most models were comented above:
 
