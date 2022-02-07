@@ -2,7 +2,6 @@
 using MagicLib_Model.Models;
 using MagicLib_Model.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,8 +81,7 @@ namespace MagicLib.Controllers
 
             // AsNoTracking: Solves "The instance of entity type 'Book' cannot be tracked because another instance with the same key value for {'Book_Id'} is already being tracked."
 
-            Book BookFromDb = _db.Books.AsNoTracking().FirstOrDefault(u=>u.Book_Id == obj.Book.Book_Id); // Get BookFromDb...
-            obj.Book.BookDetail_Id = BookFromDb.BookDetail_Id; // We assign the BookDetail_Id and solved! No more Null!!
+
             
 
             //IQueryable<Book> BookList2 = _db.Books; // Works to get BookDetail_Id
@@ -98,6 +96,10 @@ namespace MagicLib.Controllers
                 }
                 else
                 {
+
+                    Book BookFromDb = _db.Books.AsNoTracking().FirstOrDefault(u => u.Book_Id == obj.Book.Book_Id); // Get BookFromDb...
+                    obj.Book.BookDetail_Id = BookFromDb.BookDetail_Id; // We assign the BookDetail_Id and solved! No more Null!!
+
                     _db.Books.Update(obj.Book);
                     
                 }
@@ -187,6 +189,33 @@ namespace MagicLib.Controllers
             _db.SaveChanges();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult ManageAuthors(int id)
+        {
+            AuthorBookViewModel authorBookMT = new AuthorBookViewModel() //We want to populate the list 
+            {
+                AuthorBookList = _db.AuthorBookMT.Include(u => u.Book).Include(u => u.Author).Where(u => u.Book_Id == id).ToList(),
+
+                AuthorBookMT = new AuthorBookMT()
+                {
+                    Book_Id = id
+                },
+                Book = _db.Books.FirstOrDefault(u => u.Book_Id == id) // Retrive record for the book
+            };
+            List<int> tempListOfAssignedAuthors = authorBookMT.AuthorBookList.Select(u => u.Author_Id).ToList();
+            // NOT IN clause in LINQ
+            // get all the authors whose id is not in tempListOfAssignedAuthors
+            var tempList = _db.Authors.Where(u => !tempListOfAssignedAuthors.Contains(u.Author_Id)).ToList();
+
+            // Now with the list we can populate it with projections!           
+            authorBookMT.AuthorList = tempList.Select(i => new SelectListItem
+            {
+                Text = i.FullName,
+                Value = i.Author_Id.ToString()
+            });  
+
+            return View(tempListOfAssignedAuthors);
         }
 
         //public IActionResult ManageAuthors (int id)
