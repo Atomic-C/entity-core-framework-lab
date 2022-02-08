@@ -193,7 +193,7 @@ namespace MagicLib.Controllers
 
         public IActionResult ManageAuthors(int id)
         {
-            AuthorBookViewModel authorBookMT = new AuthorBookViewModel() //We want to populate the list 
+            AuthorBookViewModel authorBookMT = new AuthorBookViewModel //We want to populate the list 
             {
                 AuthorBookList = _db.AuthorBookMT.Include(u => u.Book).Include(u => u.Author).Where(u => u.Book_Id == id).ToList(),
 
@@ -215,17 +215,20 @@ namespace MagicLib.Controllers
                 Value = i.Author_Id.ToString()
             });  
 
-            return View(tempListOfAssignedAuthors);
+            return View(authorBookMT);
         }
 
-        //public IActionResult ManageAuthors (int id)
-        //{
-        //    AuthorBookViewModel authorBookViewModel = new AuthorBookViewModel
-        //    {
+            [HttpPost]
+            public IActionResult ManageAuthors(AuthorBookViewModel authorBookViewModel)
+           {
+            if (authorBookViewModel.AuthorBookMT.Book_Id !=0 && authorBookViewModel.AuthorBookMT.Author_Id !=0)
+            {
+                _db.AuthorBookMT.Add(authorBookViewModel.AuthorBookMT);
+                _db.SaveChanges();
 
-        //    }
-        //    return RedirectToAction(nameof(Index));
-        //}
+            }
+            return RedirectToAction(nameof(ManageAuthors), new { @id=authorBookViewModel.AuthorBookMT.Book_Id }); 
+           }
 
         /// <summary> 
         /// Differed execution function examples 
