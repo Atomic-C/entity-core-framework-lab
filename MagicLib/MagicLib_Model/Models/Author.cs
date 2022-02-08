@@ -20,13 +20,13 @@ namespace MagicLib_Model.Models
         public string Location { get; set; }
 
         [NotMapped]
-        public string FullName 
-        { 
-        get 
+            public string FullName 
             { 
-                return $"{FirstName} {LastName}"; 
+            get 
+                { 
+                    return $"{FirstName} {LastName}"; 
+                }
             }
-        }
 
         /* EF Relations */
         // https://henriquesd.medium.com/entity-framework-core-5-0-many-to-many-relationships-52c6c8b07b6e
