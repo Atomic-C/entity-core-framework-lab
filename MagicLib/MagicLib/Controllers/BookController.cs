@@ -190,35 +190,46 @@ namespace MagicLib.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
+        /// <summary>
+        /// Receives id, populates  AuthorBookList with eagerloading .Include(), so navigation to properties is available.
+        /// Where() 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult ManageAuthors(int id)
         {
-            AuthorBookViewModel authorBookMT = new AuthorBookViewModel //We want to populate the list 
-            {
+            AuthorBookViewModel authorBookViewModel = new AuthorBookViewModel()
+            {// populate authorbooklist for all of the books to manage author for a specific book
+                // we include author by eagerloading it and so on
                 AuthorBookList = _db.AuthorBookMT.Include(u => u.Book).Include(u => u.Author).Where(u => u.Book_Id == id).ToList(),
 
-                AuthorBookMT = new AuthorBookMT()
+                AuthorBookMT = new AuthorBookMT() // We need this because, 
                 {
-                    Book_Id = id
+                    Book_Id = id // we need to set the id for the Book_Id in case it's the first time we create an author or assigning an author for the book.
                 },
-                Book = _db.Books.FirstOrDefault(u => u.Book_Id == id) // Retrive record for the book
-            };
-            List<int> tempListOfAssignedAuthors = authorBookMT.AuthorBookList.Select(u => u.Author_Id).ToList();
-            // NOT IN clause in LINQ
-            // get all the authors whose id is not in tempListOfAssignedAuthors
+                Book = _db.Books.FirstOrDefault(u => u.Book_Id == id) // Here we retrive the record for the book
+            }; // by here our authorBookViewModel has been populated.
+
+            // List of authors assigned to current book below
+            List<int> tempListOfAssignedAuthors = authorBookViewModel.AuthorBookList.Select(u => u.Author_Id).ToList();
+            // Projections - The ability to request only certain columns from the database when writing your query
+            // https://benjii.me/2018/01/expression-projection-magic-entity-framework-core/#:~:text=A%20projection%20is%20just%20a%20way%20of%20mapping,be%20altered%2Fjoined%2Fremoved%20on%20the%20way%20through%20as%20well.
+
+            // NOT IN Clause
+            // Get all the authos whos id is not in tempListOfAssignedAuthors
             var tempList = _db.Authors.Where(u => !tempListOfAssignedAuthors.Contains(u.Author_Id)).ToList();
 
-            // Now with the list we can populate it with projections!           
-            authorBookMT.AuthorList = tempList.Select(i => new SelectListItem
+            // projections were used to populate dropdown
+            authorBookViewModel.AuthorList = tempList.Select(k => new SelectListItem // Dropdown only has authors not assigned to book!
             {
-                Text = i.FullName,
-                Value = i.Author_Id.ToString()
-            });  
+                Text = k.FullName,
+                Value = k.Author_Id.ToString()
+            });
 
-            return View(authorBookMT);
+            return View(authorBookViewModel);
         }
 
-            [HttpPost]
+        [HttpPost]
             public IActionResult ManageAuthors(AuthorBookViewModel authorBookViewModel)
            {
             if (authorBookViewModel.AuthorBookMT.Book_Id !=0 && authorBookViewModel.AuthorBookMT.Author_Id !=0)

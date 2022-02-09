@@ -14,5 +14,10 @@ namespace MagicLib_Model.Models.ViewModels
 
         public IEnumerable<AuthorBookMT> AuthorBookList { get; set; } // To display all available authors for the book
         public IEnumerable<SelectListItem> AuthorList { get; set; } // To display authors in a dropdown list
+
+        // Todo: Make a BookList?
+        // Use this to reset ids in sql server: 
+        // DBCC CHECKIDENT ('[RDB].[dbo].[NumberStats]', RESEED, 0);
+        // GO
     }
 }
