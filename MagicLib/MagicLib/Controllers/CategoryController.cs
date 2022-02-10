@@ -71,7 +71,7 @@ namespace MagicLib.Controllers
 
         public IActionResult Delete(int id)
         {
-            var obj = _db.Categories.FirstOrDefault(u => u.Category_Id == id);
+            Category obj = _db.Categories.FirstOrDefault(u => u.Category_Id == id);
             _db.Categories.Remove(obj);
             _db.SaveChanges();
 

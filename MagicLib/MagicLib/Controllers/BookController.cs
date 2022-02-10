@@ -231,15 +231,33 @@ namespace MagicLib.Controllers
 
         [HttpPost]
             public IActionResult ManageAuthors(AuthorBookViewModel authorBookViewModel)
-           {
-            if (authorBookViewModel.AuthorBookMT.Book_Id !=0 && authorBookViewModel.AuthorBookMT.Author_Id !=0)
+           {// Book_Id and Author_Id cannot be zero
+            if (authorBookViewModel.AuthorBookMT.Book_Id !=0 && authorBookViewModel.AuthorBookMT.Author_Id !=0) 
             {
-                _db.AuthorBookMT.Add(authorBookViewModel.AuthorBookMT);
+                _db.AuthorBookMT.Add(authorBookViewModel.AuthorBookMT); // TRY changing id to zero on debug to see what happens
                 _db.SaveChanges();
 
             }
-            return RedirectToAction(nameof(ManageAuthors), new { @id=authorBookViewModel.AuthorBookMT.Book_Id }); 
+            return RedirectToAction(nameof(ManageAuthors), new { @id = authorBookViewModel.AuthorBookMT.Book_Id });
+            //return RedirectToAction(nameof(ManageAuthors);
            }
+
+
+        public IActionResult RemoveAuthors(int authorId, AuthorBookViewModel authorBookViewModel) // Book_Id and Author_Id are in hidden fields here
+        {
+
+
+            // we have Author_Id and Book_Id inside authorBookViewModel
+            AuthorBookMT authorBookMT = _db.AuthorBookMT.FirstOrDefault(u => u.Author_Id == authorId && u.Book_Id == authorBookViewModel.Book.Book_Id); // We extract AuthorBookMT
+
+            int bookIdStorage = authorBookMT.Book_Id; // We store this because we need it on return since it's deleted before then on _db.Remove(authorBookMT);
+
+
+            _db.Remove(authorBookMT);
+            _db.SaveChanges();
+
+            return RedirectToAction(nameof(ManageAuthors), new { @id = bookIdStorage });
+        }
 
         /// <summary> 
         /// Differed execution function examples 
