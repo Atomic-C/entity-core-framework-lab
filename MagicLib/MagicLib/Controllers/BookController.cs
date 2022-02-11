@@ -21,15 +21,21 @@ namespace MagicLib.Controllers
 
         public IActionResult Index()
         {
-            List<Book> bookList = _db.Books.Include(u => u.Publisher).ToList(); // This is eager loading, best otimization! We retrive Publisher
-            //foreach (var item in bookList) // This is N + 1 execution.
-            //{
-            //    // Least efficient
-            //    //item.Publisher = _db.Publishers.FirstOrDefault(u=>u.Publisher_Id == item.Publisher_Id);
+            //List<Book> bookList = _db.Books.Include(u => u.Publisher).Include(t=>t.AuthorBookMT).ToList(); // This is eager loading, best otimization! We retrive Publisher
+            List<Book> bookList = _db.Books.ToList(); // This is eager loading, best otimization! We retrive Publisher
+            foreach (var item in bookList) // This is N + 1 execution.
+            {
+                // Least efficient
+                //item.Publisher = _db.Publishers.FirstOrDefault(u=>u.Publisher_Id == item.Publisher_Id);
 
-            //    // Explicit loading more efficient yeeeeeeeee ^^
-            //    _db.Entry(item).Reference(u => u.Publisher).Load(); // This is how we load publisher so view can be populated.
-            //}
+                // Explicit loading more efficient yeeeeeeeee ^^
+                _db.Entry(item).Reference(u => u.Publisher).Load(); // This is how we load publisher so view can be populated.
+                _db.Entry(item).Collection(u => u.AuthorBookMT).Load(); // This is how we load publisher so view can be populated.
+                foreach (var authorBook in item.AuthorBookMT)
+                {
+                    _db.Entry(authorBook).Reference(u => u.Author).Load();
+                }
+            }
             return View(bookList); // pass the list to the view
         }
         // Chapter 6 4, includes explicit loading.
