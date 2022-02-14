@@ -21,7 +21,7 @@ namespace MagicLib.Controllers
 
         public IActionResult Index()
         {
-            List<Book> bookList = _db.Books.Include(u => u.Publisher).Include(t=>t.AuthorBookMT).ThenInclude(j=>j.Author).ToList(); // This is eager loading, best otimization! We retrive Publisher
+            List<Book> bookList = _db.Books.AsNoTracking().Include(u => u.Publisher).Include(t=>t.AuthorBookMT).ThenInclude(j=>j.Author).ToList(); // This is eager loading, best otimization! We retrive Publisher
 
             //List<Book> bookList = _db.Books.ToList(); // This is eager loading, best otimization! We retrive Publisher
             //foreach (var item in bookList) // This is N + 1 execution.

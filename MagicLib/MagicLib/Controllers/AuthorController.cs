@@ -1,6 +1,7 @@
 ﻿using MagicLib_DataAccess.Data;
 using MagicLib_Model.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace MagicLib.Controllers
 
         public IActionResult Index()
         {
-            List<Author> authorList = _db.Authors.ToList();
+            List<Author> authorList = _db.Authors.AsNoTracking().ToList(); // Added AsNoTracking since it's readonly
             return View(authorList); // pass the list to the view
         }
 

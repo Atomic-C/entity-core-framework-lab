@@ -1,6 +1,7 @@
 ﻿using MagicLib_DataAccess.Data;
 using MagicLib_Model.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace MagicLib.Controllers
 
         public IActionResult Index()
         {
-            List<Category> categoryList = _db.Categories.ToList();
+            List<Category> categoryList = _db.Categories.AsNoTracking().ToList(); // Added AsNoTracking since it's readonly
             return View(categoryList);
         }
 
