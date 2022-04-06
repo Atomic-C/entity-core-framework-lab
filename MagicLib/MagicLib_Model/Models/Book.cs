@@ -26,7 +26,7 @@ namespace MagicLib_Model.Models
 
 
         // We set a Foreign Key relation between Book and BookDetail following the logic above
-        [ForeignKey("BookDetail")]
+        [ForeignKey("BookDetailNav")]
         public int? BookDetail_Id { get; set; }
         public BookDetail BookDetail { get; set; } // "Within a Book there is one BookDetail
 
