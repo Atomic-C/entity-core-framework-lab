@@ -19,6 +19,6 @@ Because I didn't know much about databases, I explored code first approach here 
 
 [Learn Entity Framework Core](https://www.learnentityframeworkcore.com/relationships/managing-one-to-many-relationships/>) <br>
 
-[Entity Framework Bulk Operations](https://www.entityframework-extensions.net/bulk-savechanges/>) <br>
+[Entity Framework Bulk Operations](https://entityframework-extensions.net/bulk-insert/>) <br>
 
 
