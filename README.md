@@ -1,4 +1,4 @@
-# entity-core-framework-lab #
+# Entity Core Framework-lab #
 Because I didn't know much about databases, I explored code first approach here to save time.
 
 
